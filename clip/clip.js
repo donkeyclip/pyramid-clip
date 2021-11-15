@@ -162,7 +162,7 @@ const plane = {
   id: "plane",
   model: {
     loader: "GLTFLoader",
-    file: "/plane2.glb",
+    file: "https://github.com/donkeyclip/pyramid-clip/blob/main/demo/plane2.glb",
   },
   settings:{
     position: { x:0, y: -1.5, z: .5 },
