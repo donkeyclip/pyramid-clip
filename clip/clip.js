@@ -31,9 +31,9 @@ const box = {
     type: "MeshPhongMaterial",
     parameters: [
       {
-        color: 0xa0adaf,
+        color: "#7a7a7a",
         shininess: 10,
-        specular: 0x111111,
+        // specular: 0x111111,
         dithering: true,
         side: "BackSide",
       },
@@ -43,7 +43,6 @@ const box = {
     receiveShadow: true,
     position: { x: 0, y: -0, z: 5 },
     castShadow: true,
-    // rotation:{x:- Math.PI * 0.5,y:0,z:0}
   },
 };
 
@@ -53,9 +52,9 @@ const pyramid = {
   material: {
     type: "MeshPhongMaterial",
     parameters: [{
-      color: 0xa0adaf,
+      color: "#6e7778",
       shininess: 10,
-      specular: 0x111111,
+      // specular: 0x111111,
       dithering: true,
       // side: "BackSide",
     },],
@@ -64,7 +63,7 @@ const pyramid = {
     position: { x: 0, y: -4.5, z: 5 },
     castShadow: true,
     receiveShadow: true,
-    rotation:{x:0,y:5,z:0}
+    rotation:{x:0,y:.8,z:0}
   },
 };
 
@@ -116,7 +115,7 @@ const cristal = {
         roughness: params.roughness,
         ior: params.ior,
         envMapIntensity: params.envMapIntensity,
-        transmission: params.transmission, // use material.transmission for glass materials
+        transmission: params.transmission,
         specularIntensity: params.specularIntensity,
         specularTint: params.specularTint,
         opacity: params.opacity,
@@ -139,16 +138,16 @@ const object = {
   id: "myObj",
   object: true,
   settings: {
-    position: { x: 0, y: -4.5, z: 3 },
+    position: { x: 0, y: -3, z: 1.7 },
   },
 };
-const drlight =  {
+const SpotLight =  {
   // addHelper:true,
   id: "SpotLight",
   type: "SpotLight",
-  parameters: ["0xfff",1],
+  parameters: ["0xfff",1.5],
   settings: {
-    position: { x: 0, y: 2, z: .5},
+    position: { x: 0, y: -1, z: 0},
     intensity:1.2,
     angle:.6,
     penumbra:1,
@@ -163,10 +162,11 @@ const plane = {
   id: "plane",
   model: {
     loader: "GLTFLoader",
-    file: "./plane2.glb",
+    file: "/plane2.glb",
   },
   settings:{
-    position: { x:0, y: 1.1, z: 1 },
+    position: { x:0, y: -1.5, z: .5 },
+    // rotation:{x:-0.99,y:0,z:0},
     castShadow:true
   },
   children:["Plane",]
@@ -176,11 +176,11 @@ const threeclip = new threejs.Clip(
   {
     postProcessing: {
       bloomPass: {
-        parameters: [1, 0.4, 0.35],
+        parameters: [0, 0, 0],
         settings: {
           threshold: 0,
-          strength: 1.5,
-          radius: 0,
+          strength: 1,
+          radius: 0.3,
         },
       },
     },
@@ -188,7 +188,7 @@ const threeclip = new threejs.Clip(
       type: "WebGLRenderer",
       parameters: [],
       settings: {
-        setClearColor: ["#111"],
+        setClearColor: ["#000"],
         shadowMap: { enabled: true, type: "PCFShadowMap" },
         physicallyCorrectLights: true,
       },
@@ -196,19 +196,29 @@ const threeclip = new threejs.Clip(
     scenes: {},
     lights: [
       {
-        id: "light_spot_pink",
+        id: "point_light_top",
         type: "PointLight",
-        parameters: ["#969696", 3],
+        parameters: ["#e0e0e0", 1],
         settings: {
           position: { x: -3, y: 2, z: 5 },
         },
       },
-     drlight,
+      {
+        addHelper:true,
+        id: "DirectionalLight_light_top",
+        type: "DirectionalLight",
+        parameters: ["#c8d9db", .6],
+        settings: {
+          position: { x: -7, y: 2, z: -5 },
+        },
+      },
+      SpotLight,
       {
         id: "point_light",
         type: "PointLight",
         parameters: ["#aa00ff", 1, 1.3],
         settings: {
+          // target: "!#myObj",
           position: { x: 0, y: -3.5, z: 5 },
         },
         class: ["cristalL"]
