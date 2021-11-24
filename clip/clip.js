@@ -31,9 +31,7 @@ const box = {
     type: "MeshPhongMaterial",
     parameters: [
       {
-        color: "#7a7a7a",
-        shininess: 10,
-        // specular: 0x111111,
+        color: "#fff",
         dithering: true,
         side: "BackSide",
       },
@@ -48,29 +46,26 @@ const box = {
 
 const pyramid = {
   id: "pyramid",
-  geometry: { type: "CylinderGeometry", parameters: [0, 1, 1, 4, 1] },
+  geometry: { type: "CylinderGeometry", parameters: [0, 1, 1.3, 4, 1] },
   material: {
     type: "MeshPhongMaterial",
-    parameters: [{
-      color: "#6e7778",
-      shininess: 10,
-      // specular: 0x111111,
-      dithering: true,
-      // side: "BackSide",
-    },],
+    parameters: [
+      {
+        color: "#e2e1d7",
+        shininess: 10,
+      },
+    ],
   },
   settings: {
     position: { x: 0, y: -4.5, z: 5 },
     castShadow: true,
     receiveShadow: true,
-    rotation:{x:0,y:.8,z:0}
+    rotation: { set: [0, 0.8, 0] },
   },
 };
 
-
-
-const cristal2 = {
-  id: "cristal2",
+const cristalLight = {
+  id: "cristalLight",
   geometry: { type: "OctahedronGeometry", parameters: [0.3, 0] },
   material: {
     type: "MeshBasicMaterial",
@@ -81,26 +76,10 @@ const cristal2 = {
     ],
   },
   settings: {
-    position: { x: 0, y: 0, z: 0 },
-    scale: { x: 0.4, y: .9, z: 0.4 },
-    rotation:{ x:0 , y:35 , z:0 },
+    position: { x: 0, y: -0.2, z: 0 },
+    scale: { x: 0.4, y: 0.9, z: 0.4 },
   },
-  selector: "!#point_light"
-};
-
-const params = {
-  color: 0xfff,
-  transmission: 1,
-  opacity: 1,
-  metalness: .5,
-  roughness: 0.31,
-  ior: 2,
-  thickness: 1,
-  specularIntensity: .1,
-  specularTint: 0xffffff,
-  envMapIntensity: 0.25,
-  lightIntensity: 1,
-  exposure: 1,
+  selector: "!#point_light",
 };
 
 const cristal = {
@@ -111,65 +90,69 @@ const cristal = {
     parameters: [
       {
         color: "#fff",
-        metalness: params.metalness,
-        roughness: params.roughness,
-        ior: params.ior,
-        envMapIntensity: params.envMapIntensity,
-        transmission: params.transmission,
-        specularIntensity: params.specularIntensity,
-        specularTint: params.specularTint,
-        opacity: params.opacity,
+        metalness: 0.5,
+        roughness: 0.31,
+        ior: 2,
+        envMapIntensity: 0.25,
+        transmission: 1,
+        specularIntensity: 0.1,
+        opacity: 1,
         side: "DoubleSide",
-        transparent: true,
       },
     ],
   },
   settings: {
     position: { x: 0, y: -3.5, z: 5 },
     scale: { x: 0.5, y: 1, z: 0.5 },
-    rotation:{ x:0 , y:35 , z:0 },
-    castShadow: true,
+    rotation: { set: [0, 0.09716, 0] },
+    // castShadow: true,
   },
   class: ["cristal"],
-
 };
 
 const object = {
   id: "myObj",
   object: true,
   settings: {
-    position: { x: 0, y: -3, z: 1.7 },
+    position: { x: 0, y: -3, z: 2.7 },
   },
 };
-const SpotLight =  {
-  // addHelper:true,
-  id: "SpotLight",
-  type: "SpotLight",
-  parameters: ["0xfff",1.5],
-  settings: {
-    position: { x: 0, y: -1, z: 0},
-    intensity:1.2,
-    angle:.6,
-    penumbra:1,
-    target: "!#myObj",
-    distance:40,
-    decay:.5,
-    castShadow :true
-  },
-}
 
 const plane = {
   id: "plane",
-  model: {
-    loader: "GLTFLoader",
-    file: "https://github.com/donkeyclip/pyramid-clip/blob/main/demo/plane2.glb",
+  geometry: { type: "PlaneBufferGeometry", parameters: [3, 3, 3] },
+  material: {
+    type: "MeshPhongMaterial",
+    parameters: [
+      {
+        color: "#fff",
+        side: "DoubleSide",
+      },
+    ],
   },
-  settings:{
-    position: { x:0, y: -1.5, z: .5 },
-    // rotation:{x:-0.99,y:0,z:0},
-    castShadow:true
+  settings: {
+    position: { x: 0, y: -1.5, z: 3.5 },
+    rotation: { x: Math.PI / 2, y: 0, z: 0 },
+    castShadow: true,
   },
-  children:["Plane",]
+};
+const plane1 = {
+  id: "plane1",
+  geometry: { type: "PlaneBufferGeometry", parameters: [3, 3, 3] },
+  material: {
+    type: "MeshPhongMaterial",
+    parameters: [
+      {
+        color: "#fff",
+        side: "DoubleSide",
+      },
+    ],
+  },
+  settings: {
+    position: { x: -2, y: -1.5, z: 1.5 },
+    rotation: { x: Math.PI / 2, y: 0, z: 0 },
+    castShadow: true,
+  },
 };
 
 const threeclip = new threejs.Clip(
@@ -179,8 +162,8 @@ const threeclip = new threejs.Clip(
         parameters: [0, 0, 0],
         settings: {
           threshold: 0,
-          strength: 1,
-          radius: 0.3,
+          strength: 1.1,
+          radius: 0,
         },
       },
     },
@@ -198,46 +181,65 @@ const threeclip = new threejs.Clip(
       {
         id: "point_light_top",
         type: "PointLight",
-        parameters: ["#e0e0e0", 1],
+        parameters: ["#3b4d51", 1],
         settings: {
           position: { x: -3, y: 2, z: 5 },
         },
       },
       {
-        addHelper:true,
         id: "DirectionalLight_light_top",
         type: "DirectionalLight",
-        parameters: ["#c8d9db", .6],
+        parameters: ["#3b4d51", 0.6],
         settings: {
           position: { x: -7, y: 2, z: -5 },
         },
       },
-      SpotLight,
       {
+        // window light
+        id: "SpotLight",
+        type: "SpotLight",
+        parameters: ["#f5f7ea", 500],
+        settings: {
+          position: { x: 0, y: 0, z: 0 },
+          intensity: 1.2,
+          angle: 0.6,
+          penumbra: 1,
+          target: "!#myObj",
+          distance: 10,
+          decay: 0.5,
+          castShadow: true,
+        },
+      },
+
+      {
+        // purple crystal light
         id: "point_light",
         type: "PointLight",
         parameters: ["#aa00ff", 1, 1.3],
         settings: {
-          // target: "!#myObj",
-          position: { x: 0, y: -3.5, z: 5 },
+          position: { x: 0, y: -3.3, z: 5 },
         },
-        class: ["cristalL"]
+        class: ["cristalL"],
       },
     ],
     cameras: {
       id: "camera_1",
       type: "PerspectiveCamera",
       settings: {
-        position: { x: -4.791122175950593,
-          y: -4.6115762068483175,
-          z: 1.2913128345334934 },
-        lookAt: [0,  -4.4,  5],
+        position: {
+          x: -3,
+          y: -4.5,
+          z: 3,
+        },
+        lookAt: [0, -4, 5],
         far: 10000,
         near: 1,
       },
     },
-    entities: [box, pyramid, cristal, object,plane,cristal2],
-    controls: { enable: true, enableEvents: true, maxPolarAngle: Math.PI },
+    entities: [box, pyramid, cristal, object, plane, plane1, cristalLight],
+    // controls: { enable: true, enableEvents: true, maxPolarAngle: Math.PI },
+    // stats: true,
+    isCasi: true,
   },
   {
     selector: ".container",
@@ -248,16 +250,28 @@ const threeclip = new threejs.Clip(
 const cristalAnimation = new threejs.ObjectAnimation(
   {
     animatedAttrs: {
-      position: { x: 0, y: -3, z: 5 },
+      position: { x: 0, y: -3.2, z: 5 },
     },
   },
   {
     selector: "!.cristal",
     duration: 2000,
-    easing:"easeInOutSine"
+    easing: "easeInOutSine",
   }
 );
 threeclip.addIncident(cristalAnimation, 0);
+const cristalAnimationRotate = new threejs.ObjectAnimation(
+  {
+    animatedAttrs: {
+      rotation: { x: 0, y: Math.PI, z: 0 },
+    },
+  },
+  {
+    selector: "!.cristal",
+    duration: 4000,
+  }
+);
+threeclip.addIncident(cristalAnimationRotate, 0);
 
 const pointlghtAnimation = new threejs.ObjectAnimation(
   {
@@ -267,12 +281,23 @@ const pointlghtAnimation = new threejs.ObjectAnimation(
   },
   {
     selector: "!#point_light",
-    easing:"easeInOutSine",
+    easing: "easeInOutSine",
     duration: 2000,
   }
 );
 threeclip.addIncident(pointlghtAnimation, 0);
-
+const pointlghtAnimationRotate = new threejs.ObjectAnimation(
+  {
+    animatedAttrs: {
+      rotation: { x: 0, y: Math.PI, z: 0 },
+    },
+  },
+  {
+    selector: "!#point_light",
+    duration: 4000,
+  }
+);
+threeclip.addIncident(pointlghtAnimationRotate, 0);
 const cristalAnimation2 = new threejs.ObjectAnimation(
   {
     animatedAttrs: {
@@ -282,7 +307,7 @@ const cristalAnimation2 = new threejs.ObjectAnimation(
   {
     selector: "!.cristal",
     duration: 2000,
-    easing:"easeInOutSine"
+    easing: "easeInOutSine",
   }
 );
 threeclip.addIncident(cristalAnimation2, 2000);
@@ -290,12 +315,12 @@ threeclip.addIncident(cristalAnimation2, 2000);
 const pointlghtAnimation2 = new threejs.ObjectAnimation(
   {
     animatedAttrs: {
-      position: { x: 0, y: -3.5, z: 5 },
+      position: { x: 0, y: -3.3, z: 5 },
     },
   },
   {
     selector: "!#point_light",
-    easing:"easeInOutSine",
+    easing: "easeInOutSine",
     duration: 2000,
   }
 );
