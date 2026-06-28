@@ -33,7 +33,7 @@
     "@donkeyclip/motorcortex-threejs": "3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.16.0",
+    "@babel/core": "7.29.6",
     "@babel/eslint-parser": "7.16.0",
     "@babel/plugin-syntax-jsx": "7.16.0",
     "@babel/plugin-transform-react-jsx": "7.16.0",
